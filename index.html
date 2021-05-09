@@ -3,11 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-05-09 Sun 00:23 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>&lrm;</title>
+<title>Docker toolbelt</title>
 <meta name="generator" content="Org mode" />
+<meta name="author" content="Raimon Grau" />
+<meta name="keywords" content="bash zsh shell" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -179,6 +180,12 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -228,9 +235,440 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
+<h1 class="title">Docker toolbelt</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org7cf56e5">1. Intro</a></li>
+<li><a href="#org76503f5">2. What do we want?</a></li>
+<li><a href="#org3b5fb26">3. When do we want it?</a></li>
+<li><a href="#orgd0ea80f">4. Why do we want it?</a></li>
+<li><a href="#org5afc836">5. How are we going to do it?</a></li>
+<li><a href="#orgaa219b3">6. What is a container?</a></li>
+<li><a href="#orgb77c5b5">7. ETOOMANYFLAGS</a></li>
+<li><a href="#org7569359">8. Lifecycle</a></li>
+<li><a href="#org2a5640e">9. areas</a></li>
+<li><a href="#org6e3884f">10. patterns</a></li>
+<li><a href="#org27b7bb6">11. Build</a></li>
+<li><a href="#org4072e58">12. Dockerfile</a></li>
+<li><a href="#org049b9d1">13. images can extend other images</a></li>
+<li><a href="#org2aa7078">14. Dockerfiles are like</a></li>
+<li><a href="#org0e73868">15. Running a container</a></li>
+<li><a href="#org499b475">16. Minimal flags</a></li>
+<li><a href="#org7131871">17. testing images and containers</a></li>
+<li><a href="#org32f7bf6">18. Commit</a></li>
+<li><a href="#org8dcc983">19. Env vars</a></li>
+<li><a href="#orge148830">20. If I am a program running on a container, what do I see?</a></li>
+<li><a href="#orge492358">21. Can a container run more than one process?</a></li>
+<li><a href="#org8329d35">22. Using cat from ubuntu container</a></li>
+<li><a href="#org8d3037a">23. mount a file and cat it from inside</a></li>
+<li><a href="#org25db09f">24. Docker as a tool to help you hack on development</a>
+<ul>
+<li><a href="#org3857acd">24.1. network</a></li>
+</ul>
+</li>
+<li><a href="#org69bba6a">25. dev</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7cf56e5" class="outline-2">
+<h2 id="org7cf56e5"><span class="section-number-2">1</span> Intro</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Hey! In this doc we're going to learn a few things about docker, and
+about development environments. Stay tuned.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org76503f5" class="outline-2">
+<h2 id="org76503f5"><span class="section-number-2">2</span> What do we want?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The aim of this doc is to learn about docker and docker compose
+through a practical project. This project is a development
+environment generator. Which I'll be building with you as we go.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3b5fb26" class="outline-2">
+<h2 id="org3b5fb26"><span class="section-number-2">3</span> When do we want it?</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+ASAP
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd0ea80f" class="outline-2">
+<h2 id="orgd0ea80f"><span class="section-number-2">4</span> Why do we want it?</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+To have awesome pipelines, development environments, and to learn
+about containers.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5afc836" class="outline-2">
+<h2 id="org5afc836"><span class="section-number-2">5</span> How are we going to do it?</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+At first, it's going to be about docker. Then we'll use
+docker-compose, and finally we'll generate docker-compose files
+automatically, like there's no tomorrow.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaa219b3" class="outline-2">
+<h2 id="orgaa219b3"><span class="section-number-2">6</span> What is a container?</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Do you know chroot? ok, imagine you create a chroot and you run a
+something inside it. You are going to run it successfully, and
+that process is only going to have access to that part of the
+filesystem.  But, the process you're running, will it be able
+to see other processes? what would <code>htop</code> say? Also, what about
+<code>ping www.google.com</code>?
+</p>
+
+<p>
+Containers is how we name cgroups and networking and lxc working
+together.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb77c5b5" class="outline-2">
+<h2 id="orgb77c5b5"><span class="section-number-2">7</span> ETOOMANYFLAGS</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+we'll use <code>docker</code>. All container systems have too many
+flags. There's a lot of things they can tune, but the amount of
+flags is scary. There's no way around it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7569359" class="outline-2">
+<h2 id="org7569359"><span class="section-number-2">8</span> Lifecycle</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+The same as virtual machines, there are several states in which it can be.
+<a href="https://medium.com/@BeNitinAgarwal/lifecycle-of-docker-container-d2da9f85959">https://medium.com/@BeNitinAgarwal/lifecycle-of-docker-container-d2da9f85959</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2a5640e" class="outline-2">
+<h2 id="org2a5640e"><span class="section-number-2">9</span> areas</h2>
+<div class="outline-text-2" id="text-9">
+<ul class="org-ul">
+<li>filesystem</li>
+<li>networking</li>
+<li>cpu</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6e3884f" class="outline-2">
+<h2 id="org6e3884f"><span class="section-number-2">10</span> patterns</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+We'll start seeing different patterns, like small exercises, and
+we'll start adding them up.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org27b7bb6" class="outline-2">
+<h2 id="org27b7bb6"><span class="section-number-2">11</span> Build</h2>
+<div class="outline-text-2" id="text-11">
+<p>
+<code>docker build image-directory</code> will create an image from a list of
+commands in a <code>Dockerfile</code>.
+</p>
+
+<p>
+Images are the filesystem of the container. Think a chroot, or think
+the .img or .vdi file you download to run virtualbox on it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4072e58" class="outline-2">
+<h2 id="org4072e58"><span class="section-number-2">12</span> Dockerfile</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+A dockerfile contains the recipe to create the image, ready to be
+run later on a container.
+</p>
+
+<p>
+It's like a shellscript, with some special commands, but it's an
+imperative script that gets run.
+</p>
+
+<p>
+Q: What runs the dockerfile? in which environment?
+</p>
+</div>
+</div>
+
+<div id="outline-container-org049b9d1" class="outline-2">
+<h2 id="org049b9d1"><span class="section-number-2">13</span> images can extend other images</h2>
+<div class="outline-text-2" id="text-13">
+<p>
+Dockerfiles can be divided in 3 parts
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">FROM XXXYYYY     <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">&lt;- 1 From</span>
+.....            <span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">&lt;- 2 the rest</span>
+.....
+.....
+.....
+.....
+CMD/ENTRYPOINT/RUN <span style="font-weight: bold; font-style: italic;">#</span><span style="font-weight: bold; font-style: italic;">&lt;- run command</span>
+</pre>
+</div>
+
+<p>
+You usually start from an image that already has some contents in
+its filesystem. That's why usually Dockerfiles start with the name
+of a distro <code>FROM ubuntu:20.04</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2aa7078" class="outline-2">
+<h2 id="org2aa7078"><span class="section-number-2">14</span> Dockerfiles are like</h2>
+<div class="outline-text-2" id="text-14">
+<div class="org-src-container">
+<pre class="src src-bash">git clone ubuntu:20.04 --depth=1
+cmd1
+git add -A; git commit -m <span style="font-style: italic;">'step1'</span>
+cmd2
+git add -A; git commit -m <span style="font-style: italic;">'step2'</span>
+....
+</pre>
+</div>
+
+<p>
+If you imagine 2 dockerfiles that are equal except in the last line,
+all but last lines are producing the same images. Docker is smart
+enough to share them, so the "blobs" (in git parlance) are unique
+(to keep the analogy working, you've got to obviate the fact that
+git would create different commits because they happen on different
+dates)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0e73868" class="outline-2">
+<h2 id="org0e73868"><span class="section-number-2">15</span> Running a container</h2>
+<div class="outline-text-2" id="text-15">
+<p>
+Once we have the image filesystem, we're ready to run it. When we
+run a process inside that image, jailed in a docker network
+(described in the <code>docker run</code> command), we are "starting" the
+container.
+</p>
+
+<p>
+In that moment, you can think of a last ephemeral commit in that
+chain of commits. We could be modifying files there, and we would
+see them, but when we stop and kill the container, that layer would
+disappear.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org499b475" class="outline-2">
+<h2 id="org499b475"><span class="section-number-2">16</span> Minimal flags</h2>
+<div class="outline-text-2" id="text-16">
+<ul class="org-ul">
+<li><code>docker run --rm -ti image command</code> . Those flags the basic
+combination. <code>--rm</code> tells it to clean after itself, removing
+whatever it created to make a container from <code>image</code>. <code>-ti</code> binds
+an interactive terminal, so we can communicate with it. You want
+that when running things locally 90% of the time.</li>
+
+<li><code>docker run --net=host</code> . This flattens all networking of that
+container to use the same ip as the host, so everything lives in
+the same machine, and can get to the other via
+<code>localhost</code>. Problem with it is that ports may collide. just be
+aware it's a shortcut and you'll probably want to fix it at some
+point.</li>
+
+<li><code>docker run -v $PWD:/my-dir</code> mounts a directory from host to
+container.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7131871" class="outline-2">
+<h2 id="org7131871"><span class="section-number-2">17</span> testing images and containers</h2>
+<div class="outline-text-2" id="text-17">
+<p>
+<code>docker run --rm -ti ubuntu:20.04 bash</code>.  This will open a bash
+starting from an ubuntu:20.04 image.
+</p>
+
+<p>
+In another terminal, run <code>docker run --rm -ti ubuntu:20.04 bash</code>
+again.
+</p>
+
+<p>
+You can see that both containers are running independently (files
+created in one are not seen in the other one).
+</p>
+
+<p>
+And each one of them thinks it's unique. try to run <code>top</code> in each
+one of them. They shouldn't see each other.
+</p>
+
+<p>
+But still, if you run <code>docker ps</code> from the host, you can see both
+containers run from the same image.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org32f7bf6" class="outline-2">
+<h2 id="org32f7bf6"><span class="section-number-2">18</span> Commit</h2>
+<div class="outline-text-2" id="text-18">
+<p>
+I said that a running container has that ephemeral last layer, where
+your modifications happen, and they survive a <code>stop/start</code>, but they
+don't survive a kill or rm.
+</p>
+
+<p>
+But there's a way to make the current state permanent, and
+effectively create an image, from where new containers can be
+spawned or new Dockerfiles can start FROM.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">docker run -ti ubuntu:20.04 bash
+<span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">inside the container</span>
+<span style="font-weight: bold;">echo</span> <span style="font-style: italic;">'hi'</span> &gt;/tmp/foo
+</pre>
+</div>
+
+<p>
+And in the host
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">$ docker ps                                                                                                  [21-05-09 1:18]
+CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+c6e13a79c7b3        ubuntu                      <span style="font-style: italic;">"bash"</span>                   15 seconds ago      Up 14 seconds                                                        determined_wu
+$ docker commit c6e13a79c7b3                                                                           0s  - [21-05-09 1:18]
+sha256:d6581aae94a58d9be27b6fecf576630fead7a05b003be12796152110d7f0b010
+$ docker run --rm -ti d6581aae94a58d9be27b6fecf576630fead7a05b cat /tmp/foo
+hi
+</pre>
+</div>
+
+<p>
+See? we created a new image, and we started a container from it
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8dcc983" class="outline-2">
+<h2 id="org8dcc983"><span class="section-number-2">19</span> Env vars</h2>
+<div class="outline-text-2" id="text-19">
+<p>
+Build time <code>.env</code>, runtime <code>-e</code> .
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge148830" class="outline-2">
+<h2 id="orge148830"><span class="section-number-2">20</span> If I am a program running on a container, what do I see?</h2>
+<div class="outline-text-2" id="text-20">
+<p>
+try it. <code>docker run -ti --rm ubuntu top</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge492358" class="outline-2">
+<h2 id="orge492358"><span class="section-number-2">21</span> Can a container run more than one process?</h2>
+<div class="outline-text-2" id="text-21">
+<p>
+Yes. Let's try something
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">docker run --rm -ti ubuntu bash
+<span style="font-weight: bold; font-style: italic;"># </span><span style="font-weight: bold; font-style: italic;">inside the container's shell</span>
+top
+</pre>
+</div>
+<p>
+There you see 2 processes, bash and top.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org8329d35" class="outline-2">
+<h2 id="org8329d35"><span class="section-number-2">22</span> Using cat from ubuntu container</h2>
+<div class="outline-text-2" id="text-22">
+<div class="org-src-container">
+<pre class="src src-bash">docker run --rm ubuntu cat /etc/lsb-release
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8d3037a" class="outline-2">
+<h2 id="org8d3037a"><span class="section-number-2">23</span> mount a file and cat it from inside</h2>
+<div class="outline-text-2" id="text-23">
+<div class="org-src-container">
+<pre class="src src-bash">docker run --rm -v /etc/lsb-release:/etc/lsb-release ubuntu cat /etc/lsb-release
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org25db09f" class="outline-2">
+<h2 id="org25db09f"><span class="section-number-2">24</span> Docker as a tool to help you hack on development</h2>
+<div class="outline-text-2" id="text-24">
+<ul class="org-ul">
+<li><a href="https://fly.io/blog/docker-without-docker/">https://fly.io/blog/docker-without-docker/</a></li>
+<li><a href="https://vsupalov.com/rebuilding-docker-image-development/">https://vsupalov.com/rebuilding-docker-image-development/</a></li>
+</ul>
+</div>
+<div id="outline-container-org3857acd" class="outline-3">
+<h3 id="org3857acd"><span class="section-number-3">24.1</span> network</h3>
+<div class="outline-text-3" id="text-24-1">
+<ul class="org-ul">
+<li><a href="http://flaviotoffalini.info/posts/2019/07/docker-network/">http://flaviotoffalini.info/posts/2019/07/docker-network/</a></li>
+<li><a href="https://www.cb-net.co.uk/devops/docker-container-network-isolation/">https://www.cb-net.co.uk/devops/docker-container-network-isolation/</a></li>
+<li><a href="https://iximiuz.com/en/posts/container-networking-is-simple/">https://iximiuz.com/en/posts/container-networking-is-simple/</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org69bba6a" class="outline-2">
+<h2 id="org69bba6a"><span class="section-number-2">25</span> dev</h2>
+<div class="outline-text-2" id="text-25">
+<ul class="org-ul">
+<li><a href="https://earthly.dev/">https://earthly.dev/</a></li>
+</ul>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2021-05-09 Sun 00:23</p>
+<p class="author">Author: Raimon Grau</p>
+<p class="creator"><a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.1 (<a href="https://orgmode.org">Org</a> mode 9.1.9)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
