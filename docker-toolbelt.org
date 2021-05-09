@@ -182,7 +182,7 @@
     $ docker commit c6e13a79c7b3                                                                           0s  - [21-05-09 1:18]
     sha256:d6581aae94a58d9be27b6fecf576630fead7a05b003be12796152110d7f0b010
     $ docker run --rm -ti d6581aae94a58d9be27b6fecf576630fead7a05b cat /tmp/foo
-    hi
+     hi
   #+end_src
 
 See? we created a new image, and we started a container from it
