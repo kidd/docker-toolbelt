@@ -46,6 +46,7 @@
   =ping www.google.com=?
 
   Containers is how we name cgroups and networking and lxc working
+  together to isolate processes from other processes, or group them
   together.
 
 * ETOOMANYFLAGS
@@ -57,14 +58,51 @@
   The same as virtual machines, there are several states in which it can be.
   https://medium.com/@BeNitinAgarwal/lifecycle-of-docker-container-d2da9f85959
 
-* areas
-  - filesystem
-  - networking
+  The difference with VMS is that usually, you start a VM, and it will
+  run some default processes (init, or system32-something, or
+  explore.exe). Containers, on the other side, are usually alive only
+  while they run the main process you started them with.
+
+  A single container can run multiple processes, but in general, we're
+  advised to start containers with a single main process, and when the
+  process dies, the container should follow suit.
+
+  There's a hacky way to mimick the VM style more closely, to make it
+  easier to build your mental model while learning container
+  technology: The trick is to run =tail -f /dev/null= as your main
+  process. This is basically a low-consumption infinite loop. We'll
+  see more about that later.
+
+* What are containers made of?
+  A container needs a few things to run.
+  - filesystem. The same as you'd need a .img which is the "saved
+    state" that the vm runner will use as a filesystem, container
+    running systems need also a fake filesystem to use as its main
+    filesystem.
+
+  - networking. Different containers can be running at the same time,
+    and you can choose to make them see each other or not. Or you can
+    choose to give each one an IP on the same network as the host, or
+    not. You can even give them the =--net host= option so that all
+    ports opened will live in the same host as the host machine. In
+    that case, if you run 1 container that opens port 3000 and another
+    that opens 4000, you can reach all services from all containrs, or
+    even the host, using =localhost:XXXX=.
+
   - cpu
+
+* can I run 2 containers on the same filesystem?
+  you can run 2 instances of the same Image, making them 2 different
+  running containers, and they should be independent from one another.
+
+  Even if you modify the filesystem, one container won't see the
+  modification of the other, because they run "copies" of the Image
+  filesystem. Nothing is shared unless you specify it.
 
 * patterns
   We'll start seeing different patterns, like small exercises, and
-  we'll start adding them up.
+  we'll start adding them up.  It's a bit like =the * schemer= style,
+  only worse (because I'm not Dan).
 
 * Build
   =docker build image-directory= will create an image from a list of
@@ -74,11 +112,11 @@
   the .img or .vdi file you download to run virtualbox on it.
 
 * Dockerfile
-  A dockerfile contains the recipe to create the image, ready to be
-  run later on a container.
+  A dockerfile contains the recipe to create the image and leave the
+  image in your desired state, ready to be run later on a container.
 
   It's like a shellscript, with some special commands, but it's an
-  imperative script that gets run.
+  imperative script that gets run by =docker build=.
 
   Q: What runs the dockerfile? in which environment?
 
@@ -96,7 +134,59 @@
 
   You usually start from an image that already has some contents in
   its filesystem. That's why usually Dockerfiles start with the name
-  of a distro =FROM ubuntu:20.04=.
+  of a distro =FROM ubuntu:20.04=.  If you'd like a completely empty
+  filesystem to start from, there's an images called =scratch=, that
+  looks like a recently formatted filesystem.
+
+* can I only "inherit" from an official image?
+  You can inherit from any image. Images can be in a container
+  registry (usually on the internet), or locally, where you have a
+  local collection of already downloaded images, ready to be used.
+
+  Also, when you're using =docker build=, you are creating a new
+  image.
+
+* Examples?
+  #+begin_src bash
+    echo <<EOF
+      FROM ubuntu:20.04
+    EOF >Dockerfile
+    docker build .
+
+    ....
+    Successfully build 7e0aa2e69a15
+  #+end_src
+  At this point, 7e0aa2e69a15 is functionally exact as the
+  ubuntu:20.04. it's like subclassing a class without changing any
+  method.
+
+* How do we know it?
+  #+begin_src bash
+    diff <(docker inspect 7e0aa2e69a15) <(docker inspect ubuntu:20.04)
+  #+end_src
+
+* Let's play with docker inspect
+  #+begin_src bash
+    echo <<EOF
+      FROM ubuntu:20.04
+      CMD ["tail -f /dev/null"]
+    EOF >Dockerfile
+    docker build .
+
+    ....
+    Successfully build aabbccdd
+  #+end_src
+  Now, let's diff them:
+  #+begin_src bash
+    diff <(docker inspect aabbccdd) <(docker inspect ubuntu:20.04)
+  #+end_src
+
+  Now we see the differences, and they mostly make sense. I guess you
+  now can be confident with =inspect=. Everything should make sense.
+
+* Where/how are those images stored?
+  Instead of having a .iso, .img, or .vdk, images are stored as a
+  directory with a bunch of data and metadata.
 
 * Dockerfiles are like
   #+begin_src bash
@@ -176,13 +266,13 @@
 
   And in the host
   #+begin_src bash
-    $ docker ps                                                                                                  [21-05-09 1:18]
+    $ docker ps
     CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                            NAMES
     c6e13a79c7b3        ubuntu                      "bash"                   15 seconds ago      Up 14 seconds                                                        determined_wu
-    $ docker commit c6e13a79c7b3                                                                           0s  - [21-05-09 1:18]
+    $ docker commit c6e13a79c7b3
     sha256:d6581aae94a58d9be27b6fecf576630fead7a05b003be12796152110d7f0b010
     $ docker run --rm -ti d6581aae94a58d9be27b6fecf576630fead7a05b cat /tmp/foo
-     hi
+    hi
   #+end_src
 
 See? we created a new image, and we started a container from it
@@ -214,6 +304,7 @@ See? we created a new image, and we started a container from it
 
 * Docker as a tool to help you hack on development
 - https://fly.io/blog/docker-without-docker/
+    - https://gist.github.com/tqbf/10006fae0b81d7c7c93513890ff0cf08
 - https://vsupalov.com/rebuilding-docker-image-development/
 ** network
 - http://flaviotoffalini.info/posts/2019/07/docker-network/
