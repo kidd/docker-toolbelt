@@ -336,8 +336,10 @@ See? we created a new image, and we started a container from it
 
 * Docker as a tool to help you hack on development
 - https://fly.io/blog/docker-without-docker/
-    - https://gist.github.com/tqbf/10006fae0b81d7c7c93513890ff0cf08
+  - https://gist.github.com/tqbf/10006fae0b81d7c7c93513890ff0cf08
 - https://vsupalov.com/rebuilding-docker-image-development/
+- https://news.ycombinator.com/item?id=27343933
+- https://blog.gougousis.net/file-permissions-the-painful-side-of-docker/
 ** network
 - http://flaviotoffalini.info/posts/2019/07/docker-network/
 - https://www.cb-net.co.uk/devops/docker-container-network-isolation/
