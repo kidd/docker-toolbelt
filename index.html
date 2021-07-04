@@ -240,59 +240,59 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0935695">1. Intro</a></li>
-<li><a href="#orgbda567f">2. What do we want?</a></li>
-<li><a href="#orgb422c30">3. When do we want it?</a></li>
-<li><a href="#orgc4bdf70">4. Why do we want it?</a></li>
-<li><a href="#orgd2c42ae">5. How are we going to do it?</a></li>
-<li><a href="#org71a5f4b">6. What is a container?</a></li>
-<li><a href="#org569e389">7. ETOOMANYFLAGS</a></li>
-<li><a href="#org53bffb6">8. What are containers made of?</a></li>
-<li><a href="#org29daba7">9. can I run 2 containers on the same filesystem?</a></li>
-<li><a href="#orgeef3fdd">10. patterns</a></li>
-<li><a href="#orga1c97f5">11. Build</a></li>
-<li><a href="#org2d9038f">12. Dockerfile</a></li>
-<li><a href="#org9c643d8">13. images can extend other images</a></li>
-<li><a href="#org1a896b0">14. can I only "inherit" from an official image?</a></li>
-<li><a href="#org0f3661d">15. Examples?</a></li>
-<li><a href="#orga3f67bf">16. How do we know it?</a></li>
-<li><a href="#orgb97bdc7">17. Let's play with docker inspect</a></li>
-<li><a href="#org7051171">18. Where/how are those images stored?</a></li>
-<li><a href="#orgf607c50">19. Dockerfiles are like</a></li>
-<li><a href="#orgb348ee8">20. Running a container</a></li>
-<li><a href="#orgd939beb">21. Minimal flags</a></li>
-<li><a href="#org3b47c39">22. testing images and containers</a></li>
-<li><a href="#orgff1b7d0">23. Running multiple commands</a></li>
-<li><a href="#org770f5a8">24. Commit</a></li>
-<li><a href="#org85053f7">25. Env vars</a></li>
-<li><a href="#orgf67f6df">26. If I am a program running on a container, what do I see?</a>
+<li><a href="#org357fc15">1. Intro</a></li>
+<li><a href="#orgd120bb4">2. What do we want?</a></li>
+<li><a href="#orgc52c5d9">3. When do we want it?</a></li>
+<li><a href="#orgae6bcbb">4. Why do we want it?</a></li>
+<li><a href="#org94851f1">5. How are we going to do it?</a></li>
+<li><a href="#org15e9b15">6. What is a container?</a></li>
+<li><a href="#org5cbabd3">7. ETOOMANYFLAGS</a></li>
+<li><a href="#org732cc4b">8. What are containers made of?</a></li>
+<li><a href="#orgf5f803d">9. can I run 2 containers on the same filesystem?</a></li>
+<li><a href="#orgfbc7bbe">10. patterns</a></li>
+<li><a href="#org4f9bc3c">11. Build</a></li>
+<li><a href="#org9c772f9">12. Dockerfile</a></li>
+<li><a href="#orgab9b262">13. images can extend other images</a></li>
+<li><a href="#orgce4abe3">14. can I only "inherit" from an official image?</a></li>
+<li><a href="#orge040215">15. Examples?</a></li>
+<li><a href="#org2523978">16. How do we know it?</a></li>
+<li><a href="#orge457bc9">17. Let's play with docker inspect</a></li>
+<li><a href="#orgd593073">18. Where/how are those images stored?</a></li>
+<li><a href="#orgf04630e">19. Dockerfiles are like</a></li>
+<li><a href="#org7d7db8d">20. Running a container</a></li>
+<li><a href="#org4f63320">21. Minimal flags</a></li>
+<li><a href="#org2f58d3e">22. testing images and containers</a></li>
+<li><a href="#org381a81d">23. Running multiple commands</a></li>
+<li><a href="#orgd86e72e">24. Commit</a></li>
+<li><a href="#orge994ebf">25. Env vars</a></li>
+<li><a href="#orgc18b968">26. If I am a program running on a container, what do I see?</a>
 <ul>
-<li><a href="#orgbd9b6dc">26.1. Processes</a></li>
-<li><a href="#orgc4ce8c5">26.2. Network</a></li>
-<li><a href="#org67e3834">26.3. filesystem</a></li>
+<li><a href="#org578470e">26.1. Processes</a></li>
+<li><a href="#org3ca646c">26.2. Network</a></li>
+<li><a href="#org6ea6536">26.3. filesystem</a></li>
 </ul>
 </li>
-<li><a href="#org9a20832">27. Can a container run more than one process?</a></li>
-<li><a href="#org39d90cd">28. Using cat from ubuntu container</a></li>
-<li><a href="#org515b2c5">29. mount a file and cat it from inside</a></li>
-<li><a href="#org3b79da2">30. Playing with scratch image</a></li>
-<li><a href="#org995bc0f">31. Entrypoint</a></li>
-<li><a href="#org96a3c90">32. Network</a></li>
-<li><a href="#orgd36e1a3">33. container names in a docker-compose</a></li>
-<li><a href="#org420bd74">34. Traefik and whole whole shebang</a></li>
-<li><a href="#org7f942da">35. Dok</a></li>
-<li><a href="#org8dba175">36. Docker as a tool to help you hack on development</a>
+<li><a href="#org0b86575">27. Can a container run more than one process?</a></li>
+<li><a href="#org7dba8b7">28. Using cat from ubuntu container</a></li>
+<li><a href="#org5b4b0d5">29. mount a file and cat it from inside</a></li>
+<li><a href="#orga5e34ba">30. Playing with scratch image</a></li>
+<li><a href="#orgeba3936">31. Entrypoint</a></li>
+<li><a href="#org14f6cc6">32. Network</a></li>
+<li><a href="#orgb1aba27">33. container names in a docker-compose</a></li>
+<li><a href="#org7875d25">34. Traefik and whole whole shebang</a></li>
+<li><a href="#org4696475">35. Dok</a></li>
+<li><a href="#orgfd56d3c">36. Docker as a tool to help you hack on development</a>
 <ul>
-<li><a href="#org50de007">36.1. network</a></li>
+<li><a href="#org13463b4">36.1. network</a></li>
 </ul>
 </li>
-<li><a href="#org7f6d961">37. dev</a></li>
+<li><a href="#org0f0d0d4">37. dev</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org0935695" class="outline-2">
-<h2 id="org0935695"><span class="section-number-2">1</span> Intro</h2>
+<div id="outline-container-org357fc15" class="outline-2">
+<h2 id="org357fc15"><span class="section-number-2">1</span> Intro</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Hey! In this doc we're going to learn a few things about docker, and
@@ -301,8 +301,8 @@ about development environments. Stay tuned.
 </div>
 </div>
 
-<div id="outline-container-orgbda567f" class="outline-2">
-<h2 id="orgbda567f"><span class="section-number-2">2</span> What do we want?</h2>
+<div id="outline-container-orgd120bb4" class="outline-2">
+<h2 id="orgd120bb4"><span class="section-number-2">2</span> What do we want?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The aim of this doc is to learn about docker and docker compose
@@ -312,8 +312,8 @@ environment generator. Which I'll be building with you as we go.
 </div>
 </div>
 
-<div id="outline-container-orgb422c30" class="outline-2">
-<h2 id="orgb422c30"><span class="section-number-2">3</span> When do we want it?</h2>
+<div id="outline-container-orgc52c5d9" class="outline-2">
+<h2 id="orgc52c5d9"><span class="section-number-2">3</span> When do we want it?</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 ASAP
@@ -321,8 +321,8 @@ ASAP
 </div>
 </div>
 
-<div id="outline-container-orgc4bdf70" class="outline-2">
-<h2 id="orgc4bdf70"><span class="section-number-2">4</span> Why do we want it?</h2>
+<div id="outline-container-orgae6bcbb" class="outline-2">
+<h2 id="orgae6bcbb"><span class="section-number-2">4</span> Why do we want it?</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 To have awesome pipelines, development environments, and to learn
@@ -331,8 +331,8 @@ about containers.
 </div>
 </div>
 
-<div id="outline-container-orgd2c42ae" class="outline-2">
-<h2 id="orgd2c42ae"><span class="section-number-2">5</span> How are we going to do it?</h2>
+<div id="outline-container-org94851f1" class="outline-2">
+<h2 id="org94851f1"><span class="section-number-2">5</span> How are we going to do it?</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 At first, it's going to be about docker. Then we'll use
@@ -342,8 +342,8 @@ automatically, like there's no tomorrow.
 </div>
 </div>
 
-<div id="outline-container-org71a5f4b" class="outline-2">
-<h2 id="org71a5f4b"><span class="section-number-2">6</span> What is a container?</h2>
+<div id="outline-container-org15e9b15" class="outline-2">
+<h2 id="org15e9b15"><span class="section-number-2">6</span> What is a container?</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Do you know chroot? ok, imagine you create a chroot and you run a
@@ -362,8 +362,8 @@ together.
 </div>
 </div>
 
-<div id="outline-container-org569e389" class="outline-2">
-<h2 id="org569e389"><span class="section-number-2">7</span> ETOOMANYFLAGS</h2>
+<div id="outline-container-org5cbabd3" class="outline-2">
+<h2 id="org5cbabd3"><span class="section-number-2">7</span> ETOOMANYFLAGS</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 we'll use <code>docker</code>. All container systems have too many
@@ -373,8 +373,8 @@ flags is scary. There's no way around it.
 </div>
 </div>
 
-<div id="outline-container-org53bffb6" class="outline-2">
-<h2 id="org53bffb6"><span class="section-number-2">8</span> What are containers made of?</h2>
+<div id="outline-container-org732cc4b" class="outline-2">
+<h2 id="org732cc4b"><span class="section-number-2">8</span> What are containers made of?</h2>
 <div class="outline-text-2" id="text-8">
 <p>
 A container needs a few things to run.
@@ -399,8 +399,8 @@ even the host, using <code>localhost:XXXX</code>.</li>
 </div>
 </div>
 
-<div id="outline-container-org29daba7" class="outline-2">
-<h2 id="org29daba7"><span class="section-number-2">9</span> can I run 2 containers on the same filesystem?</h2>
+<div id="outline-container-orgf5f803d" class="outline-2">
+<h2 id="orgf5f803d"><span class="section-number-2">9</span> can I run 2 containers on the same filesystem?</h2>
 <div class="outline-text-2" id="text-9">
 <p>
 you can run 2 containers from the same Image, making them 2
@@ -420,8 +420,8 @@ filesystems from one to the other)
 </div>
 </div>
 
-<div id="outline-container-orgeef3fdd" class="outline-2">
-<h2 id="orgeef3fdd"><span class="section-number-2">10</span> patterns</h2>
+<div id="outline-container-orgfbc7bbe" class="outline-2">
+<h2 id="orgfbc7bbe"><span class="section-number-2">10</span> patterns</h2>
 <div class="outline-text-2" id="text-10">
 <p>
 We'll start seeing different patterns, like small exercises, and
@@ -431,8 +431,8 @@ only worse (because I'm not Dan).
 </div>
 </div>
 
-<div id="outline-container-orga1c97f5" class="outline-2">
-<h2 id="orga1c97f5"><span class="section-number-2">11</span> Build</h2>
+<div id="outline-container-org4f9bc3c" class="outline-2">
+<h2 id="org4f9bc3c"><span class="section-number-2">11</span> Build</h2>
 <div class="outline-text-2" id="text-11">
 <p>
 <code>docker build image-directory</code> will create an image from a list of
@@ -446,8 +446,8 @@ the .img or .vdi file you download to run virtualbox on it.
 </div>
 </div>
 
-<div id="outline-container-org2d9038f" class="outline-2">
-<h2 id="org2d9038f"><span class="section-number-2">12</span> Dockerfile</h2>
+<div id="outline-container-org9c772f9" class="outline-2">
+<h2 id="org9c772f9"><span class="section-number-2">12</span> Dockerfile</h2>
 <div class="outline-text-2" id="text-12">
 <p>
 A dockerfile contains the recipe to create the image and leave the
@@ -467,8 +467,8 @@ Q: What runs the dockerfile? in which environment?
 </div>
 </div>
 
-<div id="outline-container-org9c643d8" class="outline-2">
-<h2 id="org9c643d8"><span class="section-number-2">13</span> images can extend other images</h2>
+<div id="outline-container-orgab9b262" class="outline-2">
+<h2 id="orgab9b262"><span class="section-number-2">13</span> images can extend other images</h2>
 <div class="outline-text-2" id="text-13">
 <p>
 Dockerfiles can be divided in 3 parts
@@ -500,8 +500,8 @@ command can be overriden, but it's nice to have good defaults.
 </div>
 </div>
 
-<div id="outline-container-org1a896b0" class="outline-2">
-<h2 id="org1a896b0"><span class="section-number-2">14</span> can I only "inherit" from an official image?</h2>
+<div id="outline-container-orgce4abe3" class="outline-2">
+<h2 id="orgce4abe3"><span class="section-number-2">14</span> can I only "inherit" from an official image?</h2>
 <div class="outline-text-2" id="text-14">
 <p>
 You can inherit from any image. Images can be in a container
@@ -516,8 +516,8 @@ image.
 </div>
 </div>
 
-<div id="outline-container-org0f3661d" class="outline-2">
-<h2 id="org0f3661d"><span class="section-number-2">15</span> Examples?</h2>
+<div id="outline-container-orge040215" class="outline-2">
+<h2 id="orge040215"><span class="section-number-2">15</span> Examples?</h2>
 <div class="outline-text-2" id="text-15">
 <div class="org-src-container">
 <pre class="src src-bash"><span style="font-weight: bold;">echo</span> &lt;&lt;EOF
@@ -537,8 +537,8 @@ method.
 </div>
 </div>
 
-<div id="outline-container-orga3f67bf" class="outline-2">
-<h2 id="orga3f67bf"><span class="section-number-2">16</span> How do we know it?</h2>
+<div id="outline-container-org2523978" class="outline-2">
+<h2 id="org2523978"><span class="section-number-2">16</span> How do we know it?</h2>
 <div class="outline-text-2" id="text-16">
 <div class="org-src-container">
 <pre class="src src-bash">diff &lt;(docker inspect 7e0aa2e69a15) &lt;(docker inspect ubuntu:20.04)
@@ -547,8 +547,8 @@ method.
 </div>
 </div>
 
-<div id="outline-container-orgb97bdc7" class="outline-2">
-<h2 id="orgb97bdc7"><span class="section-number-2">17</span> Let's play with docker inspect</h2>
+<div id="outline-container-orge457bc9" class="outline-2">
+<h2 id="orge457bc9"><span class="section-number-2">17</span> Let's play with docker inspect</h2>
 <div class="outline-text-2" id="text-17">
 <p>
 Let's try to change the default command that our container will run.
@@ -579,8 +579,8 @@ now can be confident with <code>inspect</code>. Everything should make sense.
 </div>
 </div>
 
-<div id="outline-container-org7051171" class="outline-2">
-<h2 id="org7051171"><span class="section-number-2">18</span> Where/how are those images stored?</h2>
+<div id="outline-container-orgd593073" class="outline-2">
+<h2 id="orgd593073"><span class="section-number-2">18</span> Where/how are those images stored?</h2>
 <div class="outline-text-2" id="text-18">
 <p>
 Instead of having a .iso, .img, or .vdk, images are stored as a
@@ -589,8 +589,8 @@ directory with a bunch of data and metadata.
 </div>
 </div>
 
-<div id="outline-container-orgf607c50" class="outline-2">
-<h2 id="orgf607c50"><span class="section-number-2">19</span> Dockerfiles are like</h2>
+<div id="outline-container-orgf04630e" class="outline-2">
+<h2 id="orgf04630e"><span class="section-number-2">19</span> Dockerfiles are like</h2>
 <div class="outline-text-2" id="text-19">
 <div class="org-src-container">
 <pre class="src src-bash">git clone ubuntu:20.04 --depth=1
@@ -613,8 +613,8 @@ dates)
 </div>
 </div>
 
-<div id="outline-container-orgb348ee8" class="outline-2">
-<h2 id="orgb348ee8"><span class="section-number-2">20</span> Running a container</h2>
+<div id="outline-container-org7d7db8d" class="outline-2">
+<h2 id="org7d7db8d"><span class="section-number-2">20</span> Running a container</h2>
 <div class="outline-text-2" id="text-20">
 <p>
 Once we have the image filesystem, we're ready to run it. When we
@@ -632,8 +632,8 @@ disappear.
 </div>
 </div>
 
-<div id="outline-container-orgd939beb" class="outline-2">
-<h2 id="orgd939beb"><span class="section-number-2">21</span> Minimal flags</h2>
+<div id="outline-container-org4f63320" class="outline-2">
+<h2 id="org4f63320"><span class="section-number-2">21</span> Minimal flags</h2>
 <div class="outline-text-2" id="text-21">
 <ul class="org-ul">
 <li><code>docker run --rm -ti image command</code> . Those flags the basic
@@ -655,8 +655,8 @@ container.</li>
 </div>
 </div>
 
-<div id="outline-container-org3b47c39" class="outline-2">
-<h2 id="org3b47c39"><span class="section-number-2">22</span> testing images and containers</h2>
+<div id="outline-container-org2f58d3e" class="outline-2">
+<h2 id="org2f58d3e"><span class="section-number-2">22</span> testing images and containers</h2>
 <div class="outline-text-2" id="text-22">
 <p>
 <code>docker run --rm -ti ubuntu:20.04 bash</code>.  This will open a bash
@@ -685,8 +685,8 @@ containers run from the same image.
 </div>
 </div>
 
-<div id="outline-container-orgff1b7d0" class="outline-2">
-<h2 id="orgff1b7d0"><span class="section-number-2">23</span> Running multiple commands</h2>
+<div id="outline-container-org381a81d" class="outline-2">
+<h2 id="org381a81d"><span class="section-number-2">23</span> Running multiple commands</h2>
 <div class="outline-text-2" id="text-23">
 <p>
 <code>docker run --rm -ti ubuntu "apt update | apt install foo"</code> doesn't
@@ -701,8 +701,8 @@ the "run" command, To test things out from a script, you can use
 </div>
 </div>
 
-<div id="outline-container-org770f5a8" class="outline-2">
-<h2 id="org770f5a8"><span class="section-number-2">24</span> Commit</h2>
+<div id="outline-container-orgd86e72e" class="outline-2">
+<h2 id="orgd86e72e"><span class="section-number-2">24</span> Commit</h2>
 <div class="outline-text-2" id="text-24">
 <p>
 I said that a running container has that ephemeral last layer, where
@@ -743,8 +743,8 @@ See? we created a new image, and we started a container from it
 </div>
 </div>
 
-<div id="outline-container-org85053f7" class="outline-2">
-<h2 id="org85053f7"><span class="section-number-2">25</span> Env vars</h2>
+<div id="outline-container-orge994ebf" class="outline-2">
+<h2 id="orge994ebf"><span class="section-number-2">25</span> Env vars</h2>
 <div class="outline-text-2" id="text-25">
 <p>
 Build time <code>.env</code>, runtime <code>-e</code> .
@@ -752,16 +752,16 @@ Build time <code>.env</code>, runtime <code>-e</code> .
 </div>
 </div>
 
-<div id="outline-container-orgf67f6df" class="outline-2">
-<h2 id="orgf67f6df"><span class="section-number-2">26</span> If I am a program running on a container, what do I see?</h2>
+<div id="outline-container-orgc18b968" class="outline-2">
+<h2 id="orgc18b968"><span class="section-number-2">26</span> If I am a program running on a container, what do I see?</h2>
 <div class="outline-text-2" id="text-26">
 <p>
 try it: We said there are mostly 3 things that get isolated: network, filesystem and processes.
 </p>
 </div>
 
-<div id="outline-container-orgbd9b6dc" class="outline-3">
-<h3 id="orgbd9b6dc"><span class="section-number-3">26.1</span> Processes</h3>
+<div id="outline-container-org578470e" class="outline-3">
+<h3 id="org578470e"><span class="section-number-3">26.1</span> Processes</h3>
 <div class="outline-text-3" id="text-26-1">
 <p>
 Instead of bash, you can run any other program as the main one. For
@@ -771,8 +771,8 @@ and list all processes <code>top</code> can see. Not many, really.
 </div>
 </div>
 
-<div id="outline-container-orgc4ce8c5" class="outline-3">
-<h3 id="orgc4ce8c5"><span class="section-number-3">26.2</span> Network</h3>
+<div id="outline-container-org3ca646c" class="outline-3">
+<h3 id="org3ca646c"><span class="section-number-3">26.2</span> Network</h3>
 <div class="outline-text-3" id="text-26-2">
 <p>
 Let's play with netstat. Netstat is not installd by default, so
@@ -790,8 +790,8 @@ docker run --net=host --rm -ti ubuntu bash -ci <span style="font-style: italic;"
 </div>
 
 
-<div id="outline-container-org67e3834" class="outline-3">
-<h3 id="org67e3834"><span class="section-number-3">26.3</span> filesystem</h3>
+<div id="outline-container-org6ea6536" class="outline-3">
+<h3 id="org6ea6536"><span class="section-number-3">26.3</span> filesystem</h3>
 <div class="outline-text-3" id="text-26-3">
 <p>
 You should be able to peek through directories by mounting volumes.
@@ -803,8 +803,8 @@ You should be able to peek through directories by mounting volumes.
 </div>
 </div>
 </div>
-<div id="outline-container-org9a20832" class="outline-2">
-<h2 id="org9a20832"><span class="section-number-2">27</span> Can a container run more than one process?</h2>
+<div id="outline-container-org0b86575" class="outline-2">
+<h2 id="org0b86575"><span class="section-number-2">27</span> Can a container run more than one process?</h2>
 <div class="outline-text-2" id="text-27">
 <p>
 Yes. Let's try something
@@ -821,8 +821,8 @@ There you see 2 processes, bash and top.
 </div>
 </div>
 
-<div id="outline-container-org39d90cd" class="outline-2">
-<h2 id="org39d90cd"><span class="section-number-2">28</span> Using cat from ubuntu container</h2>
+<div id="outline-container-org7dba8b7" class="outline-2">
+<h2 id="org7dba8b7"><span class="section-number-2">28</span> Using cat from ubuntu container</h2>
 <div class="outline-text-2" id="text-28">
 <div class="org-src-container">
 <pre class="src src-bash">docker run --rm ubuntu cat /etc/lsb-release
@@ -831,8 +831,8 @@ There you see 2 processes, bash and top.
 </div>
 </div>
 
-<div id="outline-container-org515b2c5" class="outline-2">
-<h2 id="org515b2c5"><span class="section-number-2">29</span> mount a file and cat it from inside</h2>
+<div id="outline-container-org5b4b0d5" class="outline-2">
+<h2 id="org5b4b0d5"><span class="section-number-2">29</span> mount a file and cat it from inside</h2>
 <div class="outline-text-2" id="text-29">
 <div class="org-src-container">
 <pre class="src src-bash">docker run --rm -v /etc/lsb-release:/etc/lsb-release ubuntu cat /etc/lsb-release
@@ -841,8 +841,8 @@ There you see 2 processes, bash and top.
 </div>
 </div>
 
-<div id="outline-container-org3b79da2" class="outline-2">
-<h2 id="org3b79da2"><span class="section-number-2">30</span> Playing with scratch image</h2>
+<div id="outline-container-orga5e34ba" class="outline-2">
+<h2 id="orga5e34ba"><span class="section-number-2">30</span> Playing with scratch image</h2>
 <div class="outline-text-2" id="text-30">
 <p>
 We'll create a filesystem starting from the absolute
@@ -881,8 +881,8 @@ by what we entered. The way to fix it is to enter the full command, so
 </div>
 </div>
 
-<div id="outline-container-org995bc0f" class="outline-2">
-<h2 id="org995bc0f"><span class="section-number-2">31</span> Entrypoint</h2>
+<div id="outline-container-orgeba3936" class="outline-2">
+<h2 id="orgeba3936"><span class="section-number-2">31</span> Entrypoint</h2>
 <div class="outline-text-2" id="text-31">
 <p>
 A way to lock the main program that runs, but let users modify the
@@ -892,8 +892,8 @@ arguments to this, is to use <code>ENTRYPOINT</code>
 </div>
 
 
-<div id="outline-container-org96a3c90" class="outline-2">
-<h2 id="org96a3c90"><span class="section-number-2">32</span> Network</h2>
+<div id="outline-container-org14f6cc6" class="outline-2">
+<h2 id="org14f6cc6"><span class="section-number-2">32</span> Network</h2>
 <div class="outline-text-2" id="text-32">
 <p>
 Footgun Alert:
@@ -950,8 +950,8 @@ Now <code>docker network ls</code> will tell us that the network is called <code
 </div>
 
 
-<div id="outline-container-orgd36e1a3" class="outline-2">
-<h2 id="orgd36e1a3"><span class="section-number-2">33</span> container names in a docker-compose</h2>
+<div id="outline-container-orgb1aba27" class="outline-2">
+<h2 id="orgb1aba27"><span class="section-number-2">33</span> container names in a docker-compose</h2>
 <div class="outline-text-2" id="text-33">
 <p>
 A very similar situation to the network one happens with containers
@@ -962,8 +962,8 @@ named <code>myproject_httpbin_1</code>. You can fix the name of the container wi
 </div>
 </div>
 
-<div id="outline-container-org420bd74" class="outline-2">
-<h2 id="org420bd74"><span class="section-number-2">34</span> Traefik and whole whole shebang</h2>
+<div id="outline-container-org7875d25" class="outline-2">
+<h2 id="org7875d25"><span class="section-number-2">34</span> Traefik and whole whole shebang</h2>
 <div class="outline-text-2" id="text-34">
 <p>
 So, Traefik is this reverse proxy that is able to manage your
@@ -1050,12 +1050,12 @@ its own warts.
 </div>
 </div>
 
-<div id="outline-container-org7f942da" class="outline-2">
-<h2 id="org7f942da"><span class="section-number-2">35</span> Dok</h2>
+<div id="outline-container-org4696475" class="outline-2">
+<h2 id="org4696475"><span class="section-number-2">35</span> Dok</h2>
 </div>
 
-<div id="outline-container-org8dba175" class="outline-2">
-<h2 id="org8dba175"><span class="section-number-2">36</span> Docker as a tool to help you hack on development</h2>
+<div id="outline-container-orgfd56d3c" class="outline-2">
+<h2 id="orgfd56d3c"><span class="section-number-2">36</span> Docker as a tool to help you hack on development</h2>
 <div class="outline-text-2" id="text-36">
 <ul class="org-ul">
 <li><a href="https://fly.io/blog/docker-without-docker/">https://fly.io/blog/docker-without-docker/</a>
@@ -1067,8 +1067,8 @@ its own warts.
 <li><a href="https://blog.gougousis.net/file-permissions-the-painful-side-of-docker/">https://blog.gougousis.net/file-permissions-the-painful-side-of-docker/</a></li>
 </ul>
 </div>
-<div id="outline-container-org50de007" class="outline-3">
-<h3 id="org50de007"><span class="section-number-3">36.1</span> network</h3>
+<div id="outline-container-org13463b4" class="outline-3">
+<h3 id="org13463b4"><span class="section-number-3">36.1</span> network</h3>
 <div class="outline-text-3" id="text-36-1">
 <ul class="org-ul">
 <li><a href="http://flaviotoffalini.info/posts/2019/07/docker-network/">http://flaviotoffalini.info/posts/2019/07/docker-network/</a></li>
@@ -1078,8 +1078,8 @@ its own warts.
 </div>
 </div>
 </div>
-<div id="outline-container-org7f6d961" class="outline-2">
-<h2 id="org7f6d961"><span class="section-number-2">37</span> dev</h2>
+<div id="outline-container-org0f0d0d4" class="outline-2">
+<h2 id="org0f0d0d4"><span class="section-number-2">37</span> dev</h2>
 <div class="outline-text-2" id="text-37">
 <ul class="org-ul">
 <li><a href="https://earthly.dev/">https://earthly.dev/</a></li>
