@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  traefik:
+    image: traefik:v2.0
+    ports:
+      - "8888:80"
+      - "8080:8080"
+    command:
+      # https://doc.traefik.io/traefik/v2.0/providers/docker/#defaultrule
+      # - --providers.docker.defaultRule=Host(`{{ normalize .Name }}`
+      - --api.insecure=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+      - --providers.docker.network="my_net",
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      hosting:
+
+  httpbin1:
+    image: kennethreitz/httpbin
+    # container_name: httpbin2
+    networks:
+      hosting:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.httpbin1.rule=Host(`httpbin1`)
+      - traefik.http.routers.httpbin1.entrypoints=web
+
+networks:
+  hosting:
+    name: my_net
