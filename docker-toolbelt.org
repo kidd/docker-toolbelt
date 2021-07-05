@@ -466,6 +466,11 @@ networks:
   https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
   https://doc.traefik.io/traefik/v2.0/providers/docker/#defaultrule
 
+* can I join?
+  New containers can join the network, and will be playing the game
+  without having been started on the same docker-compose.
+  - =docker run --rm --net my_net --name httpbin2 --hostname httpbin2 kennethreitz/httpbin=,
+  - =http :8888/status/202 Host:httpbin2=
 * Dok
 
 * Docker as a tool to help you hack on development
