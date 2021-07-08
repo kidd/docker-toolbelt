@@ -279,6 +279,15 @@ See? we created a new image, and we started a container from it
 * Env vars
   Build time =.env=, runtime =-e= .
 
+  Env vars that appear in the compose can be overriden, others no
+  (imagine if we could be able to mount and update LD_PRELOAD, not
+  good).
+  - https://docs.docker.com/compose/environment-variables/
+  - https://stackoverflow.com/questions/43106459/environment-variable-assignment-in-docker-compose-colon-way
+  - https://docs.docker.com/compose/compose-file/compose-file-v3/
+
+  In projects/empty-dict-value there's an example of different ways to interact with them:
+  - docker-compose run -e foo=123 mything0 ; docker eec -ti ... bash ; echo $foo
 * If I am a program running on a container, what do I see?
   try it: We said there are mostly 3 things that get isolated: network, filesystem and processes.
 

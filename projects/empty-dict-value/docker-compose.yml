@@ -1,0 +1,39 @@
+version: '3.5'
+services:
+  mything0:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+    environment:
+      foo: 123
+  mything1:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+    environment:
+      foo:
+  mything2:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+    environment:
+      foo: null
+  mything3:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+
+  myarraything0:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+    environment:
+      - foo=123
+  myarraything1:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+    environment:
+      - foo
+  myarraything2:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
+    environment:
+      - foo
+  myarraything3:
+    image: ubuntu:20.04
+    command: tail -f /dev/null
