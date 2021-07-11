@@ -399,8 +399,52 @@ networks:
   my_net:
     name: my_net
     #+end_src
-    Now =docker network ls= will tell us that the network is called =my_net=. For real :+1:
+    Now =docker network ls= will tell us that the network is called
+    =my_net=. For real :+1:
+* Deploy SPA Frontend and Backend
+  In an SPA that makes calls to the backend, the isolation that we
+  would love in a docker-compose falls appart, because the external
+  world has to have access to both frontend AND the API backend.
 
+  docker-compose can publish random free ports, but in this case, the
+  frontend has to know beforehand what is the port number that backend
+  is gonna use. That means that for the practical perspective, we have
+  to publish "8888" in a fixed place. That means that we'll have a
+  harder time running multiple instances of the stack (ports will
+  collide unless you play around with passing env_vars with random
+  ports to publish in the backend AND frontend).
+
+  #+begin_src text
+            +----------------------------------+
+            |     Browser                      |
+            |   http://localhost:3000          |
+            |   js:ajax(http://localhost:8888) |
+            |                                  |
+            +----------------------------------+
+                ^                  ^
+                | 3000             | 8888
+                |                  |
+    +-----------+------------------+---------+
+    |           |           +------+------+  |
+    | +---------+-------+   |             |  |
+    | |                 |   | backend     |  |
+    | |  frontend       |   |             |  |
+    | |                 |   |             |  |
+    | |                 |   |             |  |
+    | |                 |   +-------------+  |
+    | +-----------------+                    |
+    |                                        |
+    |                       +-------------+  |
+    |                       |             |  |
+    |                       |  db         |  |
+    |                       |             |  |
+    |                       |             |  |
+    |                       |             |  |
+    |                       +-------------+  |
+    |                                        |
+    |                                        |
+    +----------------------------------------+
+  #+end_src
 
 * container names in a docker-compose
   A very similar situation to the network one happens with containers
