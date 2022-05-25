@@ -196,15 +196,15 @@
   dates)
 
 * Running a container
-  Once we have the image filesystem, we're ready to run it. When we
-  run a process inside that image, jailed in a docker network
-  (described in the =docker run= command), we are "starting" the
-  container.
+  Once we have the image filesystem, we're ready to bring its contents
+  to life.  When we run a process inside that image, jailed in a
+  docker network (described in the =docker run= command), we are
+  "starting" the container.
 
   In that moment, you can think of a last ephemeral commit in that
-  chain of commits. We could be modifying files there, and we would
-  see them, but when we stop and kill the container, that layer would
-  disappear.
+  chain of commits being added.  We could be modifying files there,
+  and we would see them, but when we stop and kill the container, that
+  layer would disappear.
 
 * Minimal flags
   - =docker run --rm -ti image command= . Those flags the basic
@@ -360,7 +360,6 @@ See? we created a new image, and we started a container from it
 * Entrypoint
   A way to lock the main program that runs, but let users modify the
   arguments to this, is to use =ENTRYPOINT=
-
 
 * Network
   Footgun Alert:
@@ -524,6 +523,19 @@ networks:
   without having been started on the same docker-compose.
   - =docker run --rm --net my_net --name httpbin2 --hostname httpbin2 kennethreitz/httpbin=,
   - =http :8888/status/202 Host:httpbin2=
+* http_proxy, dns, and networks
+  [[./projects/network_proxy]] contains a testing project that has:
+  - coredns with a fixed ip
+  - httpbin
+  - ubuntu (we'll use it as our shell)
+  - tinyproxy. Lives in the same network
+  - tinyproxy_host lives in the host namespace, so it's accessible
+    from localhost:8888 from the host, or host.docker.internal from
+    the other containers.
+
+    We can start testing things around, by doing =docker-compose up=,
+    and on another shell, =docker-compose exec main bash=. you can run
+    =./script.sh= once inside
 * Dok
 
 * Docker as a tool to help you hack on development

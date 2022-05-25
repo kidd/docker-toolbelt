@@ -1,0 +1,62 @@
+version: '3.5'
+services:
+  tinyproxy_host:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: vimagick/tinyproxy
+    volumes:
+      - ./tinyproxy/:/etc/tinyproxy/
+    network_mode: host
+    dns:
+      - 172.20.2.1
+      - 8.8.8.8
+
+  tinyproxy:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: vimagick/tinyproxy
+    volumes:
+      - ./tinyproxy/:/etc/tinyproxy/
+    networks:
+      my_net:
+        ipv4_address: 172.20.2.4
+    dns:
+      - 172.20.2.1
+  main:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: ubuntu
+    command: tail -f /dev/null
+    working_dir: /app
+    volumes:
+      - ./script.sh:/app/script.sh
+    networks:
+      my_net:
+        ipv4_address: 172.20.2.3
+    dns:
+      - 172.20.2.1
+  httpbin:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    image: kennethreitz/httpbin
+    networks:
+      my_net:
+        ipv4_address: 172.20.2.2
+    dns:
+      - 172.20.2.1
+  dns:
+    image: coredns/coredns:latest
+    volumes:
+      - ./Corefile:/Corefile
+    networks:
+      my_net:
+        ipv4_address: 172.20.2.1
+
+networks:
+  my_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.20.2.0/16"
+    name: my_net
