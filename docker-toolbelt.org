@@ -8,7 +8,7 @@
 #+KEYWORDS: bash zsh shell
 #+LANGUAGE: en
 #+SELECT_TAGS: export
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+S_ETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+OPTIONS: reveal_center:nil timestamp:nil
 #+REVEAL_THEME: black
 # toc:nil num:nil
@@ -537,6 +537,146 @@ networks:
     and on another shell, =docker-compose exec main bash=. you can run
     =./script.sh= once inside
 * Dok
+* gojira
+* ryu
+* mba
+* hma
+  So far, the most minimalistic approach.
+
+  The goal for this project is to have a dev environment for our devs,
+  with as little code besides the docker-compose.yml file. There are a
+  few basic traits:
+
+  - Support for local non-commited customizations. The 3 files involved
+    are =hma.yml= =hma.mac.yml= =hma.override.yml=. First one is the
+    main docker-compose file, the =.mac.= has mac-only modifications,
+    and =hma.override.yml= is a local non-commited file that will be
+    merged on top of the other two.
+
+  - Augment docker-compose, but keep docker-compose knowledge relevant
+    and useful.
+
+    hma uses docker-compose under the hood, and proxies all commands
+    to docker-compose. It adds the command =do=, that tries to be
+    smart about the thing to execute, but all old docker-compose
+    knowledge is directly applicable here.
+
+    | =hma up=         | =docker-compose -f hma.yml -f hma.mac.yml -f hma.override.yml up=                           |
+    | =hma exec ...=   | =docker-compose -f hma.yml -f hma.mac.yml -f hma.override.yml exec ...=                     |
+    | =hma do=         | =docker-compose -f hma.yml -f hma.mac.yml -f hma.override.yml exec <main_service> $HMA_CLI= |
+    | =hma do db=      | =docker-compose -f hma.yml -f hma.mac.yml -f hma.override.yml exec db $HMA_CLI=             |
+    | =hma do db bash= | =docker-compose -f hma.yml -f hma.mac.yml -f hma.override.yml exec db bash=                 |
+
+  - Sane defaults. The <main_service> is guessed by the name of the directory
+
+
+  Key points (tricks) of this approach:
+
+** Mount every container's /root to ~/.hma/.hma-home/
+   We'll mount every services' /root directory to a common directory
+   in our host machine.
+
+   This way, all your hma containers will have a persistent $HOME,
+   meaning that you'll get persistent history, and a fully
+   customizable environment. Try modifying ~/.hma/.hma-home/.bashrc to
+   add a new alias, or add a script to =~/.hma/.hma-home/bin/= (and
+   add /root/bin to the $PATH in =.bashrc=).
+
+   An extra benefit is that all containers share this space at the
+   same time, so you can copy files among containers and the host
+   without needing to remember =docker cp=. It's just like a shared
+   drive.
+
+   #+begin_src yaml
+   volumes:
+     - $HOME/.hma/.hma-home:/root:rw
+   #+end_src
+** Customize the main app's service
+   The main container needs a few modifications. Change the command
+   and/or entrypoint to a waiting loop like =tail -f /dev/null=.
+
+   This way we keep the container alive and we can start our app
+   manually from within a =hma do= , which will be an equivalent of
+   =docker-compose exec $HMA_CLI=.
+
+   We should add the environment variable =HMA_CLI=, pointing to
+   some meaninful entrypoint for our dev container.
+
+   Build a developer friendly container to run the app.  This
+   container can come FROM a microsoft devcontainer, or you can build
+   your own. It should be dev-friendly to do some file navigation and
+   basic development in.
+
+   The volumes to mount are the main one for the app code (where we'll
+   overwrite the =working_dir= to), aws credentials, and of course,
+   the trick to mount the $HOME dir of the user to our "portal"
+   directory in our host.
+
+   #+begin_src yaml
+     command: tail -f /dev/null
+     build:
+       context: $PWD/.devcontainer
+       dockerfile: Dockerfile
+     volumes:
+       - $HOME/.aws/credentials:/root/.aws/credentials:rw
+       - $PWD:/app/:rw
+       - $HOME/.hma/.hma-home:/root:rw
+     working_dir: /app
+     environment:
+       HMA_CLI: bash
+   #+end_src
+
+** Dockerfile
+   To prepare your main container, ($PWD/.devcontainer/Dockerfile in
+   the example above), you should leave space for extension on the
+   =.override.yml= file. Here's an example:
+
+   #+begin_src Dockerfile
+   FROM mcr.microsoft.com/vscode/devcontainers/java:11
+
+   ARG EXTRA_DEPS
+   RUN apt-get update && apt-get -y install postgresql-client-12 $EXTRA_DEPS
+   #+end_src
+
+   With this trick, the final user will be able to install custom
+   packages by editing the =hma.override.yml=
+
+   #+begin_src yaml
+  harbormaster:
+    build:
+      args:
+        EXTRA_DEPS: nvim iputils-ping httpie
+   #+end_src
+
+** Development
+   Since we mount the app directory from the host to the container,
+   development can keep happening on the host, using your favourite
+   editor.
+
+   In case of clojure there are a few tunnings more to do:
+   - Expose a port from the container to the host
+   - Configure lein/deps.edn to use that port for the repl.
+   - =go-to-definition= will break using this approach, because when
+     your editor (emacs in my case) will ask for a function location
+     through cider, it will get a path and location according to the
+     machinery inside the container, that most likely won't match your
+     external path.
+
+     #+begin_src yaml
+     environment:
+       LEIN_REPL_PORT: 7888
+       LEIN_REPL_HOST: "0.0.0.0"
+     expose:
+       - '7888'
+     ports:
+       - '7888:7888'
+     #+end_src
+
+     #+begin_src elisp
+     (setq cider-path-translations '(("/app/harbormaster/source" . "~/workspace/harbormaster")
+                                     ("/app/metabase/source" . "~/workspace/metabase")
+                                     ("/root/.m2/" . "~/.hma/.hma-home/.m2/")))
+     #+end_src
 
 * Docker as a tool to help you hack on development
 - https://fly.io/blog/docker-without-docker/
