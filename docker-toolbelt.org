@@ -613,17 +613,20 @@ networks:
    directory in our host.
 
    #+begin_src yaml
-     command: tail -f /dev/null
-     build:
-       context: $PWD/.devcontainer
-       dockerfile: Dockerfile
-     volumes:
-       - $HOME/.aws/credentials:/root/.aws/credentials:rw
-       - $PWD:/app/:rw
-       - $HOME/.hma/.hma-home:/root:rw
-     working_dir: /app
-     environment:
-       HMA_CLI: bash
+   services:
+     #....
+     harbormaster:
+       command: tail -f /dev/null
+       build:
+         context: $PWD/.devcontainer
+         dockerfile: Dockerfile
+       volumes:
+         - $HOME/.aws/credentials:/root/.aws/credentials:rw
+         - $PWD:/app/:rw
+         - $HOME/.hma/.hma-home:/root:rw
+       working_dir: /app
+       environment:
+         HMA_CLI: bash
    #+end_src
 
 ** Dockerfile
@@ -678,6 +681,81 @@ networks:
                                      ("/root/.m2/" . "~/.hma/.hma-home/.m2/")))
      #+end_src
 
+** Code
+   #+begin_src bash
+#!/usr/bin/env bash
+die()  { echo "$*" ; exit 1; }
+mkcd() { mkdir -p "$1"; cd "$1"; }
+
+pg-create-dbs-file() {
+  cat <<'EOF'
+#!/bin/bash
+
+pg_conf_file=/var/lib/postgresql/data/postgresql.conf
+
+echo "\
+log_statement = 'all'
+log_disconnections = off
+log_duration = on
+log_min_duration_statement = -1
+shared_preload_libraries = 'pg_stat_statements'
+track_activity_query_size = 2048
+pg_stat_statements.track = all
+pg_stat_statements.max = 10000
+" >>$pg_conf_file
+
+for database in $(echo $POSTGRES_MULTIPLE_DATABASES | tr ',' ' '); do
+  echo "Creating database $database"
+  psql -U $POSTGRES_USER <<-EOSQL
+    CREATE DATABASE $database;
+    GRANT ALL PRIVILEGES ON DATABASE $database TO $POSTGRES_USER;
+    CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+EOSQL
+
+  psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d "$database" <<-EOSQL
+    CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+EOSQL
+done
+EOF
+}
+
+hma-setup() {
+  [ -f $1 ] && grep -siq 'HMA_CLI' $1 || die "Not an hma-compatible repo."
+  [ -d $HOME/.mba/.mba-home/ ] || mkdir -p $HOME/.mba/.mba-home
+  [ -d $HOME/.mba/resources/postgres/docker-entrypoint-initdb.d/ ] || (
+    mkcd $HOME/.mba/resources/postgres/docker-entrypoint-initdb.d/ &&
+      pg-create-dbs-file > 00-create-pg-db.sh && chmod +x 00-create-pg-db.sh
+  )
+}
+hma-exec () {
+  local where=${1:-$(basename $PWD)}
+  shift
+  local cmd=${@:-'$HMA_CLI'}
+  hma exec "$where" sh -lic "$cmd"
+}
+
+# hma up [maildev db]
+# hma down
+# hma do [service] [$HM_CLI]
+# hma do db
+# hma do db bash
+hma() {
+  fname="hma"
+  hma-setup "${fname}.yml"
+  if [[ $1 == "do" ]]; then
+    shift
+    hma-exec "$@"
+  else
+    local files=("-f ${fname}.yml")
+    [[ "$OSTYPE" == "darwin"* ]] && [ -f "./${fname}.mac.yml" ] && files+=("-f ./${fname}.mac.yml")
+    [ -f "./${fname}.override.yml" ] && files+=("-f ./${fname}.override.yml")
+    docker-compose ${files[*]} "$@"
+  fi
+}
+
+hma "$@"
+
+   #+end_src
 * Docker as a tool to help you hack on development
 - https://fly.io/blog/docker-without-docker/
   - https://gist.github.com/tqbf/10006fae0b81d7c7c93513890ff0cf08
