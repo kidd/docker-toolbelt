@@ -8,7 +8,7 @@
 #+KEYWORDS: bash zsh shell
 #+LANGUAGE: en
 #+SELECT_TAGS: export
-#+S_ETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+OPTIONS: reveal_center:nil timestamp:nil
 #+REVEAL_THEME: black
 # toc:nil num:nil
