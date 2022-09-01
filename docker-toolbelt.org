@@ -768,3 +768,10 @@ hma "$@"
 - https://iximiuz.com/en/posts/container-networking-is-simple/
 * dev
   - https://earthly.dev/
+
+
+* see logs for a container
+  https://stackoverflow.com/questions/41144589/how-to-redirect-docker-container-logs-to-a-single-file
+  #+begin_src bash
+    docker inspect --format='{{.LogPath}}' containername
+  #+end_src
